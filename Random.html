@@ -1,0 +1,182 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#eef2ff">
+    <meta name="description" content="Play a fun number guessing game. Guess the secret number between 1 and 100 in 10 attempts.">
+
+    <title>Number Guessing Game</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen min-h-[100dvh] bg-gradient-to-br from-slate-100 via-indigo-50 to-purple-100 text-slate-800 antialiased">
+
+    <main class="flex min-h-screen min-h-[100dvh] w-full items-center justify-center px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
+
+        <div class="w-full max-w-md rounded-2xl border border-white/80 bg-white/95 p-4 shadow-xl shadow-indigo-100/70 backdrop-blur-sm sm:rounded-3xl sm:p-7 md:p-8">
+
+            <!-- Header -->
+            <header class="mb-6 text-center sm:mb-8">
+                <div class="mb-3 text-4xl sm:text-5xl" aria-hidden="true">🎯</div>
+
+                <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                    Guess the Number
+                </h1>
+
+                <p class="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-500 sm:text-base">
+                    Guess a secret number between 1 and 100.
+                </p>
+            </header>
+
+            <!-- Attempts Counter -->
+            <section class="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-indigo-100 bg-indigo-50/80 p-3 sm:mb-6 sm:p-4">
+                <div class="min-w-0">
+                    <p class="text-sm font-bold text-slate-700 sm:text-base">
+                        Attempts Remaining
+                    </p>
+                    <p class="mt-1 text-xs text-slate-500 sm:text-sm">
+                        Use them wisely!
+                    </p>
+                </div>
+
+                <div id="atmCounter" class="shrink-0 text-center"></div>
+            </section>
+
+            <!-- Success Panel -->
+            <section
+                id="successBox"
+                class="mb-5 hidden rounded-2xl border border-green-200 bg-green-50 p-4 text-center sm:p-5"
+                role="status"
+                aria-live="polite"
+            >
+                <div class="mb-2 text-4xl" aria-hidden="true">🎉</div>
+
+                <h2 class="text-lg font-bold text-green-700 sm:text-xl">
+                    Congratulations!
+                </h2>
+
+                <p id="successMessage" class="mt-2 break-words text-sm leading-relaxed text-green-700 sm:text-base">
+                    You guessed the correct number!
+                </p>
+            </section>
+
+            <!-- Game Over Panel -->
+            <section
+                id="gameOverBox"
+                class="mb-5 hidden rounded-2xl border border-red-200 bg-red-50 p-4 text-center sm:p-5"
+                role="status"
+                aria-live="polite"
+            >
+                <div class="mb-2 text-4xl" aria-hidden="true">😔</div>
+
+                <div id="missedNum" class="break-words"></div>
+
+                <p id="gameOverMessage" class="mt-2 text-sm leading-relaxed text-red-700 sm:text-base">
+                    You have used all your attempts.
+                </p>
+
+                <p class="mt-2 text-xs text-red-500 sm:text-sm">
+                    Better luck next time!
+                </p>
+            </section>
+
+            <!-- Guess Input -->
+            <section class="mb-4">
+                <label
+                    for="guessInput"
+                    class="mb-2 block text-sm font-semibold text-slate-700 sm:text-base"
+                >
+                    Enter Your Guess
+                </label>
+
+                <input
+                    type="number"
+                    id="guessInput"
+                    min="1"
+                    max="100"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="Enter a number (1–100)"
+                    autocomplete="off"
+                    class="w-full min-w-0 rounded-xl border border-slate-300 bg-white px-3 py-3 text-base outline-none transition placeholder:text-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 sm:px-4 sm:py-3.5 sm:text-lg"
+                >
+
+                <!-- Validation Message -->
+                <p
+                    id="validationMessage"
+                    class="mt-2 hidden text-sm leading-relaxed text-red-600"
+                    role="alert"
+                >
+                    Please enter a valid number between 1 and 100.
+                </p>
+            </section>
+
+            <!-- Feedback Message -->
+            <div
+                id="message"
+                role="status"
+                aria-live="polite"
+                class="mb-4 flex min-h-12 items-center justify-center rounded-xl bg-slate-50 px-3 py-3 text-center text-sm font-semibold leading-relaxed text-slate-600 sm:mb-5 sm:text-base"
+            >
+                Good luck! Make your first guess.
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mb-6 grid grid-cols-2 gap-2.5 sm:gap-3">
+
+                <button
+                    id="guessBtn"
+                    type="button"
+                    class="min-h-11 w-full rounded-xl bg-indigo-600 px-2 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200 disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                >
+                    Check Guess
+                </button>
+
+                <button
+                    id="resetBtn"
+                    type="button"
+                    class="min-h-11 w-full rounded-xl bg-slate-200 px-2 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-300 sm:text-base"
+                >
+                    Play Again
+                </button>
+
+            </div>
+
+            <!-- Guess History -->
+            <section class="border-t border-slate-200 pt-4 sm:pt-5">
+                <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <h2 class="text-sm font-bold text-slate-800 sm:text-base">
+                        Guess History
+                    </h2>
+
+                    <span class="text-xs text-slate-400 sm:text-sm">
+                        Recent guesses
+                    </span>
+                </div>
+
+                <div
+                    id="history"
+                    class="flex min-h-8 flex-wrap gap-2 overflow-wrap-anywhere"
+                ></div>
+            </section>
+
+            <!-- Game Rules -->
+            <footer class="mt-5 border-t border-slate-100 pt-4 sm:mt-6">
+                <p class="text-center text-xs leading-relaxed text-slate-400 sm:text-sm">
+                    You have 10 attempts to find the secret number.
+                    Each incorrect guess uses one attempt.
+                </p>
+            </footer>
+
+        </div>
+    </main>
+
+    <script src="Random.js"></script>
+</body>
+</html>
+
+
